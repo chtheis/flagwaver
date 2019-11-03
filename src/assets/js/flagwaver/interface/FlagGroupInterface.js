@@ -58,6 +58,9 @@ export default class FlagGroupInterface {
     }
 
     simulate(deltaTime) {
+        if (!window.FW_App.raiseFlags)
+            return;
+        
         // ChT: Raise the flag! It takes about 60s for the 1st pole
         let maxY = this.flagpole.object.position.y - 4;
         

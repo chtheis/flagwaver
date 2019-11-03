@@ -36,5 +36,8 @@ var app;
         window.FW_App = app;
         $('.js-flag-canvas').append(app.renderer.domElement);
         window.dispatchEvent(new window.Event('resize'));
+        
+        // On click anywhere in browser start raising the flags
+        $('body').on('click', function() {FW_App.raiseFlags = true;});
     });
 })(window, document, jQuery);

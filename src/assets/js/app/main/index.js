@@ -130,7 +130,7 @@ function buildApp() {
     app.add(new ResizeModule());
     app.add(new AnimationModule());
 
-    app.add(new WindModule());
+    app.add(new WindModule({speed: getParameterByName('speed', 100)}));
     
     // ChT: Add flagpoles for 2nd, 1st, and 3rd / 4th place
     app.add(new FlagGroupModule({imgSrc: flags[1]}));
@@ -140,13 +140,13 @@ function buildApp() {
 
     // ChT: And put them in an orderly way, 2nd, 1st, 3rd and 4th
     app.module(FlagGroupModule.displayName, 0).subject.object.position.set(-(window.innerWidth * 0.45), (window.innerHeight * 0.5) / 2, 0);
-    app.module(FlagGroupModule.displayName, 0).moveFlags(-(window.innerHeight + window.innerHeight * 0.5) / 2 + 450);
+    app.module(FlagGroupModule.displayName, 0).moveFlags(-(window.innerHeight + window.innerHeight * 0.5) / 2 + 470);
     app.module(FlagGroupModule.displayName, 1).subject.object.position.set(-(window.innerWidth * 0.2), (window.innerHeight * 0.8) / 2, 0);
-    app.module(FlagGroupModule.displayName, 1).moveFlags(-(window.innerHeight + window.innerHeight * 0.8) / 2 + 450);
+    app.module(FlagGroupModule.displayName, 1).moveFlags(-(window.innerHeight + window.innerHeight * 0.8) / 2 + 470);
     app.module(FlagGroupModule.displayName, 2).subject.object.position.set(+(window.innerWidth * 0.025), (window.innerHeight * 0.3) / 2, 0);
-    app.module(FlagGroupModule.displayName, 2).moveFlags(-(window.innerHeight + window.innerHeight * 0.3) / 2 + 450);
+    app.module(FlagGroupModule.displayName, 2).moveFlags(-(window.innerHeight + window.innerHeight * 0.3) / 2 + 470);
     app.module(FlagGroupModule.displayName, 3).subject.object.position.set(+(window.innerWidth * 0.25), (window.innerHeight * 0.3) / 2, 0);
-    app.module(FlagGroupModule.displayName, 3).moveFlags(-(window.innerHeight + window.innerHeight * 0.3) / 2 + 450);
+    app.module(FlagGroupModule.displayName, 3).moveFlags(-(window.innerHeight + window.innerHeight * 0.3) / 2 + 470);
 
     app.add(new GravityModule(['flagModule']));
     app.add(new WindForceModule(['flagModule'], ['windModule']));
@@ -163,6 +163,12 @@ export default function init() {
     const app = buildApp();
 
     initialized = true;
+    
+    let prestart = getParameterByName('prestart', 0);
+    if (prestart > 0)
+        setTimeout(function() {app.raiseFlags = true;}, prestart * 1000);
+    else
+        app.raiseFlags = true;
 
     return app;
 }

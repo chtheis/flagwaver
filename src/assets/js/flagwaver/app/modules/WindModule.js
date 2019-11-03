@@ -23,11 +23,14 @@ function getModifierFnFromOption(value, defaultValue) {
  * @param {Wind} wind
  */
 export default class WindModule extends ControlModule {
-    constructor() {
+    constructor(options) {
         super();
 
         this.subject = new this.constructor.Subject();
         this.configOptions = Object.assign({}, this.constructor.Subject.defaults);
+        
+        if (options !== undefined)
+            this.setOptions(options);
     }
 
     static displayName = 'windModule';

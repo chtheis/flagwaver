@@ -37,6 +37,7 @@ export default class FlagGroupModule extends ControlModule {
 
         for (let flag of this.flags)
             app.add(flag);
+        
     }
 
     deinit(app) {

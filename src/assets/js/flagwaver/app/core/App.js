@@ -29,6 +29,8 @@ export default class App extends ModuleSystem {
 
         const clock = new THREE.Clock();
         const timestep = TIME_STEP;
+        
+        var   raiseFlags = false;
 
         const startModules = () => {
             const modules = this.modules;
