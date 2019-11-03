@@ -107,7 +107,8 @@ export default class Cloth {
 
         // Bend constraints
 
-        /* //
+        // ChT: Use both, not only shear
+        /* */ //
         const x2Distance = restDistance * 2;
         const y2Distance = restDistance * 2;
 
@@ -155,7 +156,7 @@ export default class Cloth {
                 ));
             }
         }
-        // */
+        // /* */
 
         //
         // Geometry

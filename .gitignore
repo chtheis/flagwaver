@@ -203,3 +203,6 @@ GitHub.sublime-settings
 #
 
 /dist
+/nbproject/private/
+/src/assets/img/AUT.png
+/src/flags/

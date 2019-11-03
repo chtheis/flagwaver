@@ -15,6 +15,11 @@ export default class FlagGroupInterface {
 
         this.flagpole = null;
         this.flagInterface = new FlagInterface(options);
+                
+        // ChT
+        // The speed to raise the flag. The higher the faster the flags raise.
+        // With speed == 2 it takes about 60s to raise the flag of the winner
+        this.speed = 2; 
 
         const setFlagOptions = this.flagInterface.setOptions.bind(this.flagInterface);
 
@@ -83,6 +88,10 @@ export default class FlagGroupInterface {
     }
 
     simulate(deltaTime) {
+        // ChT: Raise the flag! It takes about 60s for the 1st pole
+        if (this.flagpole && this.flagInterface)
+            if (this.flagpole.object.position.y - 4 > this.flagInterface.object.position.y)
+                this.flagInterface.object.position.y += 0.1 * this.speed;
     }
 
     render() {

@@ -2,7 +2,9 @@ import THREE from 'three';
 import { G } from '../constants';
 import localizeForce from './localizeForce';
 
-const gravity = new THREE.Vector3(0, -G * 140, 0);
+// ChT: Was (0, -G * 140, 0)
+// We make the stuff lighter, flying more horizontal
+const gravity = new THREE.Vector3(0, -G * 14, 0);
 
 /**
  * @function applyGravityToCloth

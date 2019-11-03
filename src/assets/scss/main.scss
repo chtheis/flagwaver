@@ -387,7 +387,11 @@ p, a {
 }
 
 /* //// Background Image //// */
+.bg-sky {
+    background: linear-gradient(to bottom, #90dffe 0%, #38a3d1 100%);    
+}
 
+/* // ChT without image 
 .bg-sky {
     background-attachment: fixed;
     background-color: #566c73;
@@ -408,3 +412,4 @@ p, a {
         background-image: url("../img/Sky_over_Washington_Monument-1600x1200px.jpg");
     }
 }
+*/

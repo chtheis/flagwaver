@@ -27,6 +27,7 @@
   "scripts": {
     "start": "gulp",
     "build": "gulp build --production",
+    "build-dev": "gulp build --dev",
     "deploy": "gulp build --production && git-directory-deploy --directory dist --branch gh-pages",
     "deploy-test": "gulp build --production && git-directory-deploy --directory dist --branch gh-pages --repo flagwavertest"
   },
@@ -34,7 +35,6 @@
     "core-js": "^2.6.10",
     "jquery": "^3.4.1",
     "normalize-css": "^2.3.1",
-    "rivets": "^0.9.6",
     "three": "^0.72.0"
   },
   "devDependencies": {

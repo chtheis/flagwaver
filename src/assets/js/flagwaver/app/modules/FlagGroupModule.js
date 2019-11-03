@@ -11,19 +11,21 @@ import FlagModule from './FlagModule';
  * @param {THREE.Object3D} [context]
  */
 export default class FlagGroupModule extends ControlModule {
-    constructor(subject, context) {
+    constructor(flagOpt) {
         super();
 
-        this.subject = subject || null;
-        this.context = context || null;
+        this.subject = null;
+        this.context = null;
         this.flag = null;
+        
+        this.flagOpts = flagOpt
     }
 
     static displayName = 'flagGroupModule';
     static Subject = FlagGroupInterface;
 
     init(app) {
-        this.subject = new this.constructor.Subject();
+        this.subject = new this.constructor.Subject(this.flagOpts);
 
         if (!this.context) {
             app.scene.add(this.subject.object);
