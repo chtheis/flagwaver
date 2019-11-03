@@ -60,14 +60,15 @@ function buildScene() {
 
 function buildCamera() {
     const camera = new THREE.PerspectiveCamera(
-        30,
+        parseInt(getParameterByName('cameraAngle', '30')),
         window.innerWidth / window.innerHeight,
         1,
         10000
     );
 
-    camera.position.y = 50;
-    camera.position.z = 2000;
+    camera.position.x = parseInt(getParameterByName('cameraX', '-200'));
+    camera.position.y = parseInt(getParameterByName('cameraY', '0'));
+    camera.position.z = parseInt(getParameterByName('cameraZ', '2000'));
 
     return camera;
 }
