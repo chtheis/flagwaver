@@ -29,7 +29,6 @@ export default {
         'node_modules/three/three.min.js',
         'node_modules/stats.js/build/stats.min.js',
         'node_modules/jquery/dist/jquery.min.js',
-        'node_modules/rivets/dist/rivets.bundled.min.js'
       ]
     }
   },
@@ -41,22 +40,6 @@ export default {
     cleanCss: {
       compatibility: 'ie9'
     },
-    modernizr: {
-      // https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json
-      'feature-detects': [
-        'canvas',
-        'css/flexbox',
-        'css/flexboxtweener',
-        'svg',
-        'svg/asimg',
-        'svg/inline',
-        'webgl'
-      ],
-      options: [
-        'html5shiv',
-        'setClasses'
-      ]
-    }
   },
   init: function () {
     return this;

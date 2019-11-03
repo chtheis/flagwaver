@@ -52,15 +52,11 @@ export default {
   banner: banner('FlagWaver - App'),
   external: [
     'three',
-    'jquery',
-    'rivets',
-    'hashvars'
+    'jquery'
   ],
   globals: {
     three: 'THREE',
-    jquery: 'jQuery',
-    rivets: 'rivets',
-    hashvars: 'HashVars'
+    jquery: 'jQuery'
   },
   plugins: [
     resolve(),

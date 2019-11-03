@@ -18,7 +18,7 @@ import sass                     from 'gulp-sass';
 import sassTildeImporter        from 'node-sass-tilde-importer';
 
 import uglify                   from 'gulp-uglify';
-import modernizr                from 'modernizr';
+// import modernizr                from 'modernizr';
 import { rollup }               from 'rollup';
 import rollupStream             from 'rollup-stream';
 import buffer                   from 'vinyl-buffer';
@@ -99,17 +99,6 @@ function buildAppJS() {
     .pipe(gulp.dest(config.paths.dest.js));
 }
 
-function buildModernizrJS(done) {
-  modernizr.build(config.settings.modernizr, (code) => {
-    file('modernizr-custom.js', code, { src: true })
-      .pipe(gulpif(PRODUCTION, uglify()
-        .on('error', (e) => { console.log(e); })
-      ))
-      .pipe(gulp.dest(config.paths.dest.js))
-      .on('finish', done);
-  });
-}
-
 function copyExternalJS() {
   return gulp.src(config.paths.deps.js)
     .pipe(gulp.dest(config.paths.dest.js));
@@ -117,7 +106,6 @@ function copyExternalJS() {
 
 const buildJS = gulp.parallel(
   buildAppJS,
-  buildModernizrJS,
   copyExternalJS
 );
 
