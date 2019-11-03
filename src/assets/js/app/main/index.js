@@ -16,23 +16,25 @@ let initialized = false;
 // Functions
 //
 
-function getParameterByName(name, def) {
-    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-    var regexS = "[\\?&]" + name + "=([^&#]*)";
-    var regex = new RegExp(regexS);
-    var results = regex.exec(window.location.search);
-    if(results == null && parent != undefined) {
-        // If parent defines getParameterByName, use it.
-        if (false && parent.getParameterByName !== undefined)
-            return parent.getParameterByName(name, def);
+if (window.getParameterByName === undefined) {
+    window.getParameterByName = function(name, def) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.location.search);
+        if(results == null && parent != undefined) {
+            // If parent defines getParameterByName, use it.
+            if (false && parent.getParameterByName !== undefined)
+                return parent.getParameterByName(name, def);
 
-         // Else try with parents location search
-        results = regex.exec(parent.window.location.search);
-    }
-    if(results == null)
-        return def;
-    else
-        return decodeURIComponent(results[1].replace(/\+/g, " "));
+             // Else try with parents location search
+            results = regex.exec(parent.window.location.search);
+        }
+        if(results == null)
+            return def;
+        else
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
 }
 
 function fromQuery() {
