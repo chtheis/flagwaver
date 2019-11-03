@@ -14,7 +14,7 @@ loader.setCrossOrigin('anonymous');
  * @param {Function} [error]
  */
 export default function loadImage(src, callback, error) {
-    let url = '../src/flags/' + src + '.png';
+    let url = window.imageLocation + '/' + src + '.png';
     
     loader.load(url, callback, null, (e) => {
         console.error(
