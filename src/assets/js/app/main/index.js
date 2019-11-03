@@ -118,8 +118,9 @@ function initLights(app) {
 }
 
 function buildApp() {
+    // Initialized location for flags from query parameter
+    window.imageLocation = getParameterByName('imageLocation', window.imageLocation);
     
-    window.imageLocation = getParameterByName('imageLocation', '../flags');
     const flags = fromQuery();
     
     const app = new App({
