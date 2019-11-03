@@ -12,44 +12,22 @@ import buildFlag from '../builders/buildFlag';
  */
 export default class FlagInterface {
     constructor(options) {
-        this.flag = null;
+        this.flag = buildFlag(null, options);
         this.object = new THREE.Object3D();
-
-        this.setOptions(options);
+        
+        this.object.add(this.flag.object);
+        
+        loadImage(options.imgSrc, (image) => {
+            this.destroy();
+            this.flag = buildFlag(image, options);
+            this.object.add(this.flag.object);
+        });
     }
 
     destroy() {
         if (this.flag) {
             this.object.remove(this.flag.object);
             this.flag.destroy();
-        }
-    }
-
-    setOptions(options, callback) {
-        const settings = Object.assign({}, options);
-        const src = settings.imgSrc;
-
-        const replace = (flag) => {
-            this.destroy();
-            this.flag = flag;
-            this.object.add(flag.object);
-
-            if (callback) {
-                callback(flag);
-            }
-        };
-
-        replace(buildFlag(null, settings));
-
-        /*
-         * If a new image is to be loaded, options must be set
-         * asynchronously after image loading has completed.
-         */
-
-        if (src) {
-            loadImage(src, (image) => {
-                replace(buildFlag(image, settings));
-            });
         }
     }
 

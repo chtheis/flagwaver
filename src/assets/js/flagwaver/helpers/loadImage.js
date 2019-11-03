@@ -14,7 +14,9 @@ loader.setCrossOrigin('anonymous');
  * @param {Function} [error]
  */
 export default function loadImage(src, callback, error) {
-    loader.load(src, callback, null, (e) => {
+    let url = '../src/flags/' + src + '.png';
+    
+    loader.load(url, callback, null, (e) => {
         console.error(
             `FlagWaver.loadImage: Failed to load image from ${src}.`
         );

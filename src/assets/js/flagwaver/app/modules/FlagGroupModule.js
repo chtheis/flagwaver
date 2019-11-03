@@ -16,7 +16,7 @@ export default class FlagGroupModule extends ControlModule {
 
         this.subject = null;
         this.context = null;
-        this.flag = null;
+        this.flags = [];
         
         this.flagOpts = flagOpt
     }
@@ -31,13 +31,17 @@ export default class FlagGroupModule extends ControlModule {
             app.scene.add(this.subject.object);
         }
 
-        this.flag = new FlagModule(this.subject.flagInterface, this.subject.object);
+        
+        for (let flagInterface of this.subject.flagInterfaces)
+            this.flags.push(new FlagModule(flagInterface, this.subject.object));
 
-        app.add(this.flag);
+        for (let flag of this.flags)
+            app.add(flag);
     }
 
     deinit(app) {
-        app.remove(this.flag);
+        for (flag of this.flags)
+            app.remove(flag);
 
         if (!this.context) {
             app.scene.remove(this.subject.object);
@@ -53,5 +57,14 @@ export default class FlagGroupModule extends ControlModule {
     update(deltaTime) {
         this.subject.simulate(deltaTime);
         this.subject.render();
+    }
+    
+    moveFlags(y) {
+        let ypos = y;
+        
+        for (let flagInterface of this.subject.flagInterfaces) {
+            flagInterface.object.position.y = ypos;
+            ypos -= 220;
+        }           
     }
 }

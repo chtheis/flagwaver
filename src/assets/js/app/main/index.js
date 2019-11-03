@@ -39,9 +39,7 @@ function fromQuery() {
     var flags = []
     
     for (let i = 0; i < 4; i++) {
-        let imgURL   = getParameterByName('' + (i+1), null) || 'AUT';
-        imgURL = '../src/flags/' + imgURL + '.png';
-        
+        let imgURL   = getParameterByName('' + (i+1), null) || 'AUT';        
         flags.push(imgURL);
     }
 
@@ -142,13 +140,13 @@ function buildApp() {
 
     // ChT: And put them in an orderly way, 2nd, 1st, 3rd and 4th
     app.module(FlagGroupModule.displayName, 0).subject.object.position.set(-(window.innerWidth * 0.45), (window.innerHeight * 0.5) / 2, 0);
-    app.module(FlagGroupModule.displayName, 0).subject.flagInterface.object.position.set(0, -(window.innerHeight + window.innerHeight * 0.5) / 2 + 400, 0);
+    app.module(FlagGroupModule.displayName, 0).moveFlags(-(window.innerHeight + window.innerHeight * 0.5) / 2 + 450);
     app.module(FlagGroupModule.displayName, 1).subject.object.position.set(-(window.innerWidth * 0.2), (window.innerHeight * 0.8) / 2, 0);
-    app.module(FlagGroupModule.displayName, 1).subject.flagInterface.object.position.set(0, -(window.innerHeight + window.innerHeight * 0.8) / 2 + 400, 0);
+    app.module(FlagGroupModule.displayName, 1).moveFlags(-(window.innerHeight + window.innerHeight * 0.8) / 2 + 450);
     app.module(FlagGroupModule.displayName, 2).subject.object.position.set(+(window.innerWidth * 0.025), (window.innerHeight * 0.3) / 2, 0);
-    app.module(FlagGroupModule.displayName, 2).subject.flagInterface.object.position.set(0, -(window.innerHeight + window.innerHeight * 0.3) / 2 + 400, 0);
+    app.module(FlagGroupModule.displayName, 2).moveFlags(-(window.innerHeight + window.innerHeight * 0.3) / 2 + 450);
     app.module(FlagGroupModule.displayName, 3).subject.object.position.set(+(window.innerWidth * 0.25), (window.innerHeight * 0.3) / 2, 0);
-    app.module(FlagGroupModule.displayName, 3).subject.flagInterface.object.position.set(0, -(window.innerHeight + window.innerHeight * 0.3) / 2 + 400, 0);
+    app.module(FlagGroupModule.displayName, 3).moveFlags(-(window.innerHeight + window.innerHeight * 0.3) / 2 + 450);
 
     app.add(new GravityModule(['flagModule']));
     app.add(new WindForceModule(['flagModule'], ['windModule']));

@@ -6,9 +6,8 @@ import Flagpole from '../subjects/Flagpole';
  * @description Helper for generating different types of flagpoles.
  *
  * @param {Object} [options]
- * @param {Flag} flag
  */
-export default function buildFlagpole(options, flag) {
+export default function buildFlagpole(options) {
     const settings = Object.assign({}, options);
     let flagpole;
 
