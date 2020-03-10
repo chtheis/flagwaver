@@ -1,16 +1,15 @@
 import path                     from 'path';
 
-import yargs                    from 'yargs';
-
 import babel                    from 'rollup-plugin-babel';
 import commonjs                 from 'rollup-plugin-commonjs';
 import resolve                  from 'rollup-plugin-node-resolve';
 import replace                  from 'rollup-plugin-replace';
 
+import packageJson              from '../package.json';
 import config                   from './config';
 
-// Check for --production flag
-const PRODUCTION = !!yargs.argv.production;
+const PRODUCTION = config.env === 'production';
+const ROLLUP_QUICK_BUILD = !PRODUCTION;
 
 function banner(title) {
   return '/*!' +
@@ -45,54 +44,61 @@ function glsl() {
 
 export default {
   input: path.join(config.paths.src.js, '/index.js'),
-  file: path.join(config.paths.dest.js, '/app.js'),
-  format: 'iife',
-  indent: '    ',
-  sourcemap: !PRODUCTION,
-  banner: banner('FlagWaver - App'),
-  external: [
-    'three',
-    'jquery',
-    'rivets',
-    'hashvars'
-  ],
-  globals: {
-    three: 'THREE',
-    jquery: 'jQuery',
-    rivets: 'rivets',
-    hashvars: 'HashVars'
+  output: {
+    file: path.join(config.paths.dest.js, '/app.js'),
+    format: 'iife',
+    indent: ROLLUP_QUICK_BUILD ? false : '    ',
+    banner: banner('FlagWaver - App'),
+    globals: {
+      'modernizr': 'window.Modernizr || {}',
+      'three': 'THREE'
+    }
   },
+  external: [
+    'modernizr',
+    'three'
+  ],
+  treeshake: !ROLLUP_QUICK_BUILD,
   plugins: [
     resolve(),
     commonjs({
-      include: 'node_modules/**'
+      include: 'node_modules/**',
+      sourcemap: !ROLLUP_QUICK_BUILD,
+      namedExports: {
+        'node_modules/react/index.js': [
+          'Children', 'createRef', 'Component', 'PureComponent',
+          'createContext', 'forwardRef', 'lazy', 'memo',
+          'useCallback', 'useContext', 'useEffect', 'useImperativeHandle',
+          'useDebugValue', 'useLayoutEffect', 'useMemo', 'useReducer',
+          'useRef', 'useState', 'Fragment', 'StrictMode', 'Suspense',
+          'createElement', 'cloneElement', 'createFactory', 'isValidElement',
+          'version', 'unstable_ConcurrentMode', 'unstable_Profiler'
+        ],
+        'node_modules/react-dom/index.js': [
+          'createPortal', 'findDOMNode', 'hydrate', 'render',
+          'unstable_renderSubtreeIntoContainer', 'unmountComponentAtNode',
+          'unstable_createPortal', 'unstable_batchedUpdates',
+          'unstable_interactiveUpdates', 'flushSync',
+          'unstable_createRoot', 'unstable_flushControlled'
+        ],
+        'node_modules/react-redux/node_modules/react-is/index.js': [
+          'typeOf', 'AsyncMode', 'ConcurrentMode',
+          'ContextConsumer', 'ContextProvider', 'Element', 'ForwardRef',
+          'Fragment', 'Lazy', 'Memo', 'Portal', 'Profiler',
+          'StrictMode', 'Suspense',
+          'isValidElementType', 'isAsyncMode', 'isConcurrentMode',
+          'isContextConsumer', 'isContextProvider', 'isElement', 'isForwardRef',
+          'isFragment', 'isLazy', 'isMemo', 'isPortal', 'isProfiler',
+          'isStrictMode', 'isSuspense'
+        ]
+      }
     }),
     glsl(),
-    babel({
-      /*
-       * Do not use config settings defined in .babelrc as it is targeted
-       * for use with Gulp scripts. Config settings targeted for use with
-       * Rollup should be kept separate.
-       */
-      babelrc: false,
-      presets: [
-        ['@babel/preset-env', {
-          modules: false,
-          targets: {
-            browsers: config.compatibility
-          },
-          useBuiltIns: 'entry'
-        }]
-      ],
-      plugins: [
-        '@babel/plugin-external-helpers',
-        ['@babel/plugin-proposal-class-properties', { 'loose': true }],
-      ]
-    }),
+    babel(),
     replace({
-      'process.env.NODE_ENV': JSON.stringify(
-        PRODUCTION ? 'production' : 'development'
-      )
+      'process.env.VERSION': JSON.stringify(packageJson.version),
+      'process.env.NODE_ENV': JSON.stringify(config.env),
+      'process.env.PUBLIC_URL': JSON.stringify(config.app.PUBLIC_URL)
     })
   ]
 };

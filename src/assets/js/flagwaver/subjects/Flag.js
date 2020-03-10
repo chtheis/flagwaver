@@ -1,51 +1,30 @@
 import THREE from 'three';
+
 import { Side } from '../constants';
+import { generateDataTexture } from '../utils/ImageUtils';
 import { isNumeric } from '../utils/TypeUtils';
 import ShaderChunk from '../webgl/ShaderChunk';
-import Cloth from './Cloth';
-import FixedConstraint from './FixedConstraint';
+import Cloth from '../physics/Cloth';
+import FixedConstraint from '../physics/FixedConstraint';
 
 // Default flag texture
-const WHITE_TEXTURE = THREE.ImageUtils
-    .generateDataTexture(1, 1, new THREE.Color(0xffffff));
+const WHITE_TEXTURE = generateDataTexture(1, 1, new THREE.Color(0xffffff));
 
 function buildCloth(options) {
-    const restDistance = options.height / options.granularity;
+    const { width, height, mass, granularity } = options;
+    const restDistance = height / granularity;
 
     return new Cloth(
-        Math.round(options.width / restDistance),
-        Math.round(options.height / restDistance),
+        Math.round(width / restDistance),
+        Math.round(height / restDistance),
         restDistance,
-        options.mass
+        mass * width * height
     );
 }
 
 function buildMesh(cloth, options) {
     let texture = WHITE_TEXTURE;
     const geometry = cloth.geometry;
-
-    // Material
-    const material = new THREE.MeshPhongMaterial({
-        alphaTest: 0.5,
-        color:     0xffffff,
-        specular:  0x030303,
-        /*
-         * shininess cannot be 0 as it causes bugs in some systems.
-         * https://github.com/mrdoob/three.js/issues/7252
-         */
-        shininess: 0.001,
-        metal:     false,
-        side:      THREE.DoubleSide
-    });
-
-    /* //
-    material = new THREE.MeshBasicMaterial({
-        color:       0x00ff00,
-        wireframe:   true,
-        transparent: true,
-        opacity:     0.9
-    });
-    // */
 
     // Texture
     if (options && options.texture) {
@@ -63,15 +42,35 @@ function buildMesh(cloth, options) {
         }
     }
 
-    material.map = texture;
+    // Material
+    const material = new THREE.MeshPhongMaterial({
+        alphaTest: 0.5,
+        color:     0xffffff,
+        specular:  0x030303,
+        /*
+         * shininess cannot be 0 as it causes bugs in some systems.
+         * https://github.com/mrdoob/three.js/issues/7252
+         */
+        shininess: 0.001,
+        side:      THREE.DoubleSide,
+        map:       texture
+    });
+
+    /* //
+    material = new THREE.MeshBasicMaterial({
+        color:       0x00ff00,
+        wireframe:   true,
+        transparent: true,
+        opacity:     0.9
+    });
+    // */
 
     // Mesh
     const mesh = new THREE.Mesh(geometry, material);
 
     mesh.castShadow = true;
-    mesh.receiveShadow = true;
     mesh.customDepthMaterial = new THREE.ShaderMaterial({
-        uniforms:       { texture: { type: 't', value: texture } },
+        uniforms:       { texture: { value: texture } },
         vertexShader:   ShaderChunk.depth_vert,
         fragmentShader: ShaderChunk.depth_frag
     });
@@ -181,9 +180,9 @@ export default class Flag {
     }
 
     static defaults = {
-        width:          300,
-        height:         200,
-        mass:           0.1,
+        width:          1.8,
+        height:         1.2,
+        mass:           0.11, // 110 g/m^s
         granularity:    10,
         rigidness:      1,
         texture:        WHITE_TEXTURE,

@@ -6,10 +6,11 @@ import gulp                     from 'gulp';
 
 import browser                  from 'browser-sync';
 import rimraf                   from 'rimraf';
-import yargs                    from 'yargs';
 
 import file                     from 'gulp-file';
+import flatten                  from 'gulp-flatten';
 import gulpif                   from 'gulp-if';
+import replace                  from 'gulp-replace';
 import sourcemaps               from 'gulp-sourcemaps';
 
 import autoprefixer             from 'gulp-autoprefixer';
@@ -17,25 +18,16 @@ import cleanCss                 from 'gulp-clean-css';
 import sass                     from 'gulp-sass';
 import sassTildeImporter        from 'node-sass-tilde-importer';
 
+import rollup                   from 'gulp-better-rollup';
 import uglify                   from 'gulp-uglify';
 import modernizr                from 'modernizr';
-import { rollup }               from 'rollup';
-import rollupStream             from 'rollup-stream';
-import buffer                   from 'vinyl-buffer';
-import source                   from 'vinyl-source-stream';
+
+import workboxBuild             from 'workbox-build';
 
 import config                   from './config';
 import rollupConfig             from './rollupConfig';
 
-//
-// Config
-//
-
-// Check for --production flag
-const PRODUCTION = !!yargs.argv.production;
-
-// Set node environment flag
-process.env.NODE_ENV = PRODUCTION ? 'production' : 'development';
+const PRODUCTION = config.env === 'production';
 
 //
 // Prepare destination directory
@@ -60,6 +52,7 @@ function copyGitIgnore() {
 
 function buildPages() {
   return gulp.src(config.paths.src.html)
+    .pipe(replace('@PUBLIC_URL', config.app.PUBLIC_URL))
     .pipe(gulp.dest(config.paths.dest.html));
 }
 
@@ -85,13 +78,9 @@ function buildCSS() {
 //
 
 function buildAppJS() {
-  const filename = path.basename(rollupConfig.file);
-  const base = config.paths.src.js;
-
-  return rollupStream(Object.assign({ rollup: { rollup } }, rollupConfig))
-    .pipe(source(filename, base))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps: true }))
+  return gulp.src(rollupConfig.input)
+    .pipe(sourcemaps.init())
+    .pipe(rollup(rollupConfig, rollupConfig.output))
     .pipe(gulpif(PRODUCTION, uglify()
       .on('error', (e) => { console.log(e); })
     ))
@@ -122,12 +111,43 @@ const buildJS = gulp.parallel(
 );
 
 //
-// Build Images
+// Build images
 //
 
 function buildImages() {
   return gulp.src(config.paths.src.img)
     .pipe(gulp.dest(config.paths.dest.img));
+}
+
+//
+// Build fonts
+//
+
+function buildFonts() {
+  return gulp.src(config.paths.src.fonts)
+    .pipe(flatten())
+    .pipe(gulp.dest(config.paths.dest.fonts));
+}
+
+//
+// Build static assets
+//
+
+function buildStatic() {
+  return gulp.src(config.paths.src.static)
+    .pipe(replace('@PUBLIC_URL', config.app.PUBLIC_URL))
+    .pipe(gulp.dest(config.paths.dest.static));
+}
+
+//
+// Build service worker
+//
+
+function buildSW() {
+  return workboxBuild.generateSW(config.settings.workboxBuild)
+    .then(({ count, size }) => {
+      console.log(`Generated "${config.settings.workboxBuild.swDest}", which will precache ${count} files, totaling ${size} bytes.`);
+    });
 }
 
 //
@@ -150,10 +170,13 @@ function server(done) {
 function watch() {
   gulp.watch(config.paths.src.html)
     .on('all', gulp.series(buildPages, browser.reload));
+
   gulp.watch(config.paths.src.sass)
     .on('all', gulp.series(buildCSS));
+
   gulp.watch(path.join(config.paths.src.js, '/**/*.js'))
     .on('all', gulp.series(buildJS, browser.reload));
+
   gulp.watch(config.paths.src.img)
     .on('all', gulp.series(buildImages, browser.reload));
 }
@@ -176,8 +199,11 @@ gulp.task(
       buildPages,
       buildCSS,
       buildJS,
-      buildImages
-    )
+      buildImages,
+      buildFonts,
+      buildStatic
+    ),
+    buildSW
   )
 );
 

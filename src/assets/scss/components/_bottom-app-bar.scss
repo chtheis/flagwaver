@@ -1,0 +1,113 @@
+//
+// Bottom app bar
+//
+
+.bottom-app-bar,
+.bottom-app-bar-primary,
+.bottom-app-bar-secondary,
+.bottom-app-bar-tertiary {
+    display: flex;
+}
+
+.bottom-app-bar {
+    $bottom-app-bar-padding-x: 0.5 * $spacer;
+    $bottom-app-bar-padding-y: 0.5 * $spacer;
+    $bottom-app-bar-sm-padding-x: $grid-gutter-width;
+    $bottom-app-bar-sm-padding-y: $grid-gutter-half;
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: $bottom-app-bar-padding-y $bottom-app-bar-padding-x;
+    background: $brand-overlay-white;
+
+    @include breakpoint(sm) {
+        padding: $bottom-app-bar-sm-padding-y $bottom-app-bar-sm-padding-x;
+    }
+
+    .form-section {
+        margin-right: $grid-gutter-width;
+    }
+
+    .form-group {
+        &:not(:last-child) {
+            margin-bottom: 0;
+            margin-right: 0.5 * $spacer;
+        }
+    }
+
+    .form-label {
+        @include sr-only;
+    }
+
+    .field-group {
+        position: relative;
+        margin: 0;
+    }
+
+    .field-group-legend {
+        position: absolute;
+        bottom: 100%;
+        margin-bottom: $bottom-app-bar-padding-y;
+        padding-bottom: 0.25rem;
+        color: $text-inverse-color;
+        font-size: $font-size-lg;
+        @include font-smoothing;
+
+        @include breakpoint(sm) {
+            margin-bottom: $bottom-app-bar-sm-padding-y;
+        }
+    }
+
+    .field-group-body {
+        display: flex;
+        padding: 0;
+        border: 0;
+    }
+
+    .btn-select-block {
+        .btn-select-options {
+            // Fixes for IE
+            display: inline-flex;
+
+            .btn-select-option {
+                flex: 1 0 auto;
+            }
+        }
+    }
+}
+
+.bottom-app-bar-primary {
+    @include breakpoint(0 sm) {
+        .form-section {
+            margin: 0;
+        }
+
+        @include browser-ie10-up {
+            width: 100%;
+
+            .form-section {
+                width: 100%;
+            }
+
+            .form-group {
+                &:last-child {
+                    flex: 1 1 0%;
+                }
+            }
+        }
+    }
+}
+
+.bottom-app-bar-secondary {
+    @include breakpoint(0 sm) {
+        display: none;
+    }
+}
+
+.bottom-app-bar-tertiary {
+    @include breakpoint(0 md) {
+        display: none;
+    }
+}

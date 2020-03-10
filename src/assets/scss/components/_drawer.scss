@@ -1,0 +1,56 @@
+//
+// Drawer
+//
+
+$drawer-width: rem(288px);
+$drawer-xs-width: rem(320px);
+$drawer-sm-width: rem(360px);
+
+$drawer-zindex: $zindex-fixed;
+
+.drawer {
+    width: $drawer-width;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: $drawer-zindex;
+    overflow-y: auto;
+    background-color: $white;
+    box-shadow: none;
+    transform: translateX(-100%);
+    transition: visibility 0ms $transition-duration,
+        box-shadow $transition-style, transform $transition-style;
+
+    @include breakpoint(xs) {
+        width: $drawer-xs-width;
+    }
+
+    @include breakpoint(sm) {
+        width: $drawer-sm-width;
+    }
+
+    &.open {
+        visibility: visible;
+        box-shadow: 0 0 0.5rem 0.25rem rgba($black, 0.25);
+        transform: translateX(0);
+        transition: visibility 0ms,
+            box-shadow $transition-style, transform $transition-style;
+    }
+}
+
+.drawer-overlay {
+    visibility: hidden;
+    @include block-full;
+    z-index: $drawer-zindex;
+    background-color: $white;
+    opacity: 0;
+    transition: opacity $transition-style, visibility 0ms $transition-duration;
+
+    &.open {
+        visibility: visible;
+        opacity: 0.5;
+        transition: opacity $transition-style, visibility 0ms 0ms;
+    }
+}

@@ -1,0 +1,67 @@
+//
+// Button
+//
+
+.btn {
+    border-color: $border-color-dark;
+    font-weight: 500;
+
+    &:hover,
+    &:focus {
+        background: lighten($primary-color, 50%);
+        border-color: $primary-color;
+        color: $primary-color;
+    }
+
+    &:active,
+    &.active {
+        background: $primary-color-light;
+        border-color: $primary-color-light;
+        color: $light-color;
+        transition: $control-shadow-transition;
+    }
+
+    &[disabled],
+    &:disabled,
+    &.disabled {
+        border-color: $bg-color-dark;
+        color: $bg-color-dark;
+        opacity: 1;
+
+        &.active {
+            background: $bg-color-dark;
+            color: $light-color;
+        }
+    }
+
+    &.btn-link {
+        &:hover,
+        &:focus {
+            border-color: transparent;
+        }
+
+        &:active,
+        &.active {
+            color: $light-color;
+        }
+    }
+
+    .btn-text {
+        vertical-align: top;
+    }
+
+    .icon + .btn-text,
+    .btn-text + .icon {
+        margin-left: 0.5rem;
+    }
+}
+
+.btn-group {
+    flex-wrap: nowrap;
+
+    .btn {
+        &.active {
+            z-index: 2;
+        }
+    }
+}
