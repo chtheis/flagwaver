@@ -38,7 +38,7 @@ if (window.getParameterByName === undefined) {
 }
 
 function fromQuery() {
-    var flags = []
+    var flags = [];
     
     for (let i = 0; i < 4; i++) {
         let imgURL   = getParameterByName('' + (i+1), null) || 'AUT';        
@@ -66,7 +66,7 @@ function buildCamera() {
         10000
     );
 
-    camera.position.x = parseInt(getParameterByName('cameraX', '-200'));
+    camera.position.x = parseInt(getParameterByName('cameraX', '0'));
     camera.position.y = parseInt(getParameterByName('cameraY', '0'));
     camera.position.z = parseInt(getParameterByName('cameraZ', '2000'));
 
@@ -135,7 +135,7 @@ function buildApp() {
     app.add(new ResizeModule());
     app.add(new AnimationModule());
 
-    app.add(new WindModule({speed: getParameterByName('speed', 100)}));
+    app.add(new WindModule({speed: getParameterByName('windSpeed', 100)}));
     
     // ChT: Add flagpoles for 2nd, 1st, and 3rd / 4th place
     app.add(new FlagGroupModule({imgSrc: flags[1]}));
@@ -146,12 +146,12 @@ function buildApp() {
     // ChT: And put them in an orderly way, 2nd, 1st, 3rd and 4th
     app.module(FlagGroupModule.displayName, 0).subject.object.position.set(-(window.innerWidth * 0.45), (window.innerHeight * 0.5) / 2, 0);
     app.module(FlagGroupModule.displayName, 0).moveFlags(-(window.innerHeight + window.innerHeight * 0.5) / 2 + 470);
-    app.module(FlagGroupModule.displayName, 1).subject.object.position.set(-(window.innerWidth * 0.2), (window.innerHeight * 0.8) / 2, 0);
+    app.module(FlagGroupModule.displayName, 1).subject.object.position.set(-(window.innerWidth * 0.20), (window.innerHeight * 0.8) / 2, 0);
     app.module(FlagGroupModule.displayName, 1).moveFlags(-(window.innerHeight + window.innerHeight * 0.8) / 2 + 470);
-    app.module(FlagGroupModule.displayName, 2).subject.object.position.set(+(window.innerWidth * 0.025), (window.innerHeight * 0.3) / 2, 0);
-    app.module(FlagGroupModule.displayName, 2).moveFlags(-(window.innerHeight + window.innerHeight * 0.3) / 2 + 470);
-    app.module(FlagGroupModule.displayName, 3).subject.object.position.set(+(window.innerWidth * 0.25), (window.innerHeight * 0.3) / 2, 0);
-    app.module(FlagGroupModule.displayName, 3).moveFlags(-(window.innerHeight + window.innerHeight * 0.3) / 2 + 470);
+    app.module(FlagGroupModule.displayName, 2).subject.object.position.set(+(window.innerWidth * 0.05), (window.innerHeight * 0.3) / 2, 0);
+    app.module(FlagGroupModule.displayName, 2).moveFlags(-(window.innerHeight + window.innerHeight * 0.35) / 2 + 470);
+    app.module(FlagGroupModule.displayName, 3).subject.object.position.set(+(window.innerWidth * 0.30), (window.innerHeight * 0.3) / 2, 0);
+    app.module(FlagGroupModule.displayName, 3).moveFlags(-(window.innerHeight + window.innerHeight * 0.35) / 2 + 470);
 
     app.add(new GravityModule(['flagModule']));
     app.add(new WindForceModule(['flagModule'], ['windModule']));
