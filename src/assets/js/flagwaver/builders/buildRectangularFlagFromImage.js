@@ -5,7 +5,7 @@ import { isNumeric, isObject } from '../utils/TypeUtils';
 import Flag from '../subjects/Flag';
 
 const defaults = {
-    width: 'auto',
+    width: 200,
     height: 'auto',
     hoisting: Hoisting.DEXTER,
     topEdge: Side.TOP
@@ -14,18 +14,18 @@ const defaults = {
 // Calculate width and/or height from image if either is set to 'auto'
 function computeSizeFromImage(image, options) {
     if (options.width === 'auto' && options.height === 'auto') {
-        const crossWidth = Flag.defaults.height;
+        const crossWidth = window.innerWidth * 0.2;
 
         if (image.width < image.height) {
             // Vertical
             return {
                 width:  crossWidth,
-                height: crossWidth * image.height / image.width
+                height: crossWidth * image.width / image.height
             };
         } else {
             // Horizontal or square
             return {
-                width:  crossWidth * image.width / image.height,
+                width:  crossWidth * image.height / image.width,
                 height: crossWidth
             };
         }
