@@ -185,11 +185,18 @@ export default function init() {
 
     initialized = true;
     
-    let prestart = getParameterByName('prestart', 0);
-    if (prestart > 0)
-        setTimeout(function() {app.raiseFlags = true;}, prestart * 1000);
-    else
+    let prestart = getParameterByName('prestart', 1);
+    if (prestart > 0) {
+        setTimeout(function() {
+            // remove (in) visibility
+            $('.bg-sky').css('visibility', '');
+            app.raiseFlags = true;
+        }, prestart * 1000);
+    } else {
+        // remove (in) visibility
+        $('.bg-sky').css('visibility', '');
         app.raiseFlags = true;
+    }
 
     return app;
 }
