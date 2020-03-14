@@ -12,9 +12,8 @@ import FlagInterface from './FlagInterface';
 export default class FlagGroupInterface {
     constructor(options) {
         // ChT
-        // The speed to raise the flag. The higher the faster the flags raise.
-        // With speed == 2 it takes about 60s to raise the flag of the winner
-        this.speed = 2; 
+        // The duration to raise the 1st place flag
+        this.duration = options.duration; 
 
         this.object = new THREE.Object3D();
 
@@ -61,15 +60,20 @@ export default class FlagGroupInterface {
         if (!window.FW_App.raiseFlags)
             return;
         
-        // ChT: Raise the flag! It takes about 60s for the 1st pole
+        // ChT: Raise the flag! 
+        // Calculate offset
+        const flagStart = (window.innerWidth * 0.21 * 2 / 3) * 1.1 * 2.2;
+        let offset = (window.innerHeight * 0.9 - flagStart) / this.duration * deltaTime;
         let maxY = this.flagpole.object.position.y - 4;
         
         if (this.flagpole && this.flagInterfaces) {
             for (let flagInterface of this.flagInterfaces) {
-                if (maxY > flagInterface.object.position.y)
-                    flagInterface.object.position.y += 0.1 * this.speed;
+                if (maxY > flagInterface.object.position.y + offset)
+                    flagInterface.object.position.y += offset;
+                else if (maxY > flagInterface.object.y)
+                    flagInterface.object.position.y = maxY;
                 
-                maxY -= 220;
+                maxY -= flagInterface.flag.cloth.height * 1.1;
             }
         }
     }

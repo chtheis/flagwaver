@@ -60,12 +60,12 @@ export default class FlagGroupModule extends ControlModule {
         this.subject.render();
     }
     
-    moveFlags(y) {
+    moveFlags(y, offset) {
         let ypos = y;
         
         for (let flagInterface of this.subject.flagInterfaces) {
             flagInterface.object.position.y = ypos;
-            ypos -= 220;
+            ypos -= offset;
         }           
     }
 }
