@@ -1,7 +1,9 @@
 import THREE from 'three';
 import ModuleSystem from './ModuleSystem';
 
-const FPS = 60;
+// ChT: We animate the flags in slow motion: they wave quieter as if the wind speed
+// were lowwer, but they still wouldn't hang down.
+const FPS = 30;
 const TIME_STEP = 1 / FPS;
 
 /**
@@ -77,7 +79,9 @@ export default class App extends ModuleSystem {
             requestAnimationFrame(loop);
 
             if (clock.running) {
-                update(Math.min(clock.getDelta(), timestep));
+                // ChT: Animation in slow motion. Three would still call us
+                // with 60fps, but we fake half speed
+                update(Math.min(clock.getDelta() / 2, timestep));
             }
         };
 
