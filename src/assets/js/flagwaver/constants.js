@@ -9,7 +9,9 @@ export const FPS = 30;
 export const TIME_STEP = 1 / FPS;
 export const DAMPING    = 0.03;
 export const DRAG       = 1 - DAMPING;
-export const G          = 9.81;
+export const DRAG_COEFFICIENT   = 0.12;
+export const AIR_DENSITY        = 1.225; // kg/m^3
+export const G                  = 9.80665; // m/s^2
 
 /**
  * Enum for flag hoisting side.
@@ -61,5 +63,22 @@ export const FlagpoleType = {
     HORIZONTAL: 'horizontal',
     OUTRIGGER:  'outrigger',
     CROSSBAR:   'crossbar',
-    GALLERY:    'gallery'
+    GALLERY:    'gallery',
+    AUSTRALIAN: 'australian'
+};
+
+/**
+ * Enum for vertical flag hanging protocols.
+ *
+ * @readonly
+ * @enum {string}
+ * @typedef {string} VerticalHoisting
+ */
+export const VerticalHoisting = {
+    /** Flag orientation does not change. */
+    NONE: 'none',
+    /** Flag is rotated 90 degrees clockwise. */
+    TOP_RIGHT: 'topright',
+    /** Flag is rotated 90 degrees clockwise and flipped horizontally. */
+    TOP_LEFT: 'topleft'
 };
