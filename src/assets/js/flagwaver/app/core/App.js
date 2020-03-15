@@ -1,10 +1,7 @@
 import THREE from 'three';
-import ModuleSystem from './ModuleSystem';
 
-// ChT: We animate the flags in slow motion: they wave quieter as if the wind speed
-// were lowwer, but they still wouldn't hang down.
-const FPS = 30;
-const TIME_STEP = 1 / FPS;
+import { TIME_STEP } from '../../constants';
+import ModuleSystem from './ModuleSystem';
 
 /**
  * @class App

@@ -3,6 +3,10 @@
 //
 
 // Physics constants
+// ChT: We animate the flags in slow motion: they wave quieter as if the wind speed
+// were lowwer, but they still wouldn't hang down.
+export const FPS = 30;
+export const TIME_STEP = 1 / FPS;
 export const DAMPING    = 0.03;
 export const DRAG       = 1 - DAMPING;
 export const G          = 9.81;
