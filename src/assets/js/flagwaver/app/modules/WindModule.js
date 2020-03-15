@@ -1,7 +1,7 @@
 import { isNumeric, isFunction } from '../../utils/TypeUtils';
 import createPropertyValidator from '../../helpers/createPropertyValidator';
 import Wind from '../../subjects/Wind';
-import WindModifiers from '../../subjects/WindModifiers';
+import WindModifiers from '../../subjects/utils/WindModifiers';
 import ControlModule from './ControlModule';
 
 function getModifierFnFromOption(value, defaultValue) {

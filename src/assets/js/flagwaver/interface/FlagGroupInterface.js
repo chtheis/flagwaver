@@ -1,5 +1,5 @@
 import THREE from 'three';
-import buildFlagpole from '../builders/buildFlagpole';
+import buildFlagpole from '../helpers/buildFlagpole';
 import FlagInterface from './FlagInterface';
 
 /**
