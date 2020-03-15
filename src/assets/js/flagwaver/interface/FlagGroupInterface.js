@@ -11,8 +11,7 @@ import FlagInterface from './FlagInterface';
  */
 export default class FlagGroupInterface {
     constructor(options) {
-        // ChT
-        // The duration to raise the 1st place flag
+        // ChT: the duration to raise the 1st place flag
         this.duration = options.duration; 
 
         this.object = new THREE.Object3D();
@@ -35,6 +34,9 @@ export default class FlagGroupInterface {
         this.setFlagpoleOptions(options);
         this.setFlagOptions(options);
  */
+        // ChT: We need our own clock to raise the flag in real time,
+        // even on low performance devices
+        this.clock = new THREE.Clock();
     }
 
     static FlagInterface = FlagInterface;
@@ -57,13 +59,17 @@ export default class FlagGroupInterface {
     }
 
     simulate(deltaTime) {
+        // ChT: Raise the flag! 
         if (!window.FW_App.raiseFlags)
             return;
         
-        // ChT: Raise the flag! 
+        // Get our own delta because the argument  may be shorter than the 
+        // real time difference
+        let delta = this.clock.getDelta();
+        
         // Calculate offset
         const flagStart = (window.innerWidth * 0.21 * 2 / 3) * 1.1 * 2.2;
-        let offset = (window.innerHeight * 0.9 - flagStart) / this.duration * deltaTime;
+        let offset = (window.innerHeight * 0.9 - flagStart) / this.duration * delta;
         let maxY = this.flagpole.object.position.y - 4;
         
         if (this.flagpole && this.flagInterfaces) {
