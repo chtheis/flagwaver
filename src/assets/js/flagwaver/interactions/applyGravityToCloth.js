@@ -1,6 +1,6 @@
 import THREE from 'three';
 import { G } from '../constants';
-import localizeForce from './localizeForce';
+import localizeForce from './utils/localizeForce';
 
 // ChT: Was (0, -G * 140, 0)
 // We make the stuff lighter, flying more horizontal

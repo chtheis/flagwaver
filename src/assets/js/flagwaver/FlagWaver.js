@@ -4,7 +4,7 @@ export * from './constants';
 // Subjects
 export { default as Flag } from './subjects/Flag';
 export { default as Wind } from './subjects/Wind';
-export { default as WindModifiers } from './subjects/WindModifiers';
+export { default as WindModifiers } from './subjects/utils/WindModifiers';
 
 // Interface
 export { default as FlagInterface } from './interface/FlagInterface';
